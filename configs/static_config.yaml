@@ -1,10 +1,20 @@
 components_manager:
     task_processors:
         main-task-processor:
+            thread_name: main-worker
             worker_threads: $worker-threads
 
         fs-task-processor:
+            thread_name: fs-worker
             worker_threads: $worker-fs-threads
+
+        monitor-task-processor:
+            thread_name: mon-worker
+            worker_threads: $worker-monitor-threads
+
+    event_thread_pool:
+        threads: $event-threads
+        threads#fallback: 2
 
     default_task_processor: main-task-processor
 
@@ -13,6 +23,18 @@ components_manager:
             listener:                 
                 port: $server-port            
                 task_processor: main-task-processor
+                connection:
+                    in_buffer_size: 32768
+                    requests_queue_size_threshold: 100
+            listener-monitor:
+                port: $monitor-server-port
+                port#fallback: 8086
+                connection:
+                    in_buffer_size: 32768
+                    requests_queue_size_threshold: 100
+                task_processor: monitor-task-processor
+            server-name: $server-name
+            max_response_size_in_flight: 1073741824 # 1Gib
 
         logging:
             fs-task-processor: fs-task-processor
@@ -24,14 +46,37 @@ components_manager:
 
         dns-client:
             fs-task-processor: fs-task-processor
-
         http-client:
             load-enabled: $is-testing
+            user-agent: $user-agent
             fs-task-processor: fs-task-processor
-
+        
+        handler-inspect-requests:
+            path: /service/inspect-requests
+            method: GET
+            task_processor: monitor-task-processor
+        handler-log-level:
+            path: /service/log-level/{level}
+            method: GET,PUT
+            task_processor: monitor-task-processor
+        handler-on-log-rotate:
+            path: /service/on-log-rotate/
+            method: POST
+            task_processor: monitor-task-processor
+        handler-dynamic-debug-log:
+            path: /service/log/dynamic-debug
+            method: GET,PUT,DELETE
+            task_processor: monitor-task-processor
+        handler-dns-client-control:
+            path: /service/dnsclient/{command}
+            method: POST
+            task_processor: monitor-task-processor
+        handler-server-monitor:
+            path: /service/monitor
+            method: GET
+            task_processor: monitor-task-processor
 
         testsuite-support: {}
-
         tests-control:
             load-enabled: $is-testing
             path: /tests/{action}
