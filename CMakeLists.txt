@@ -22,7 +22,11 @@ add_library(${PROJECT_NAME}-objs OBJECT
     src/miet/lambda-executor/handlers/execute-lambda.cpp
 )
 target_include_directories(${PROJECT_NAME}-objs PUBLIC src/)
-target_link_libraries(${PROJECT_NAME}-objs PUBLIC userver::postgresql)
+target_link_libraries(${PROJECT_NAME}-objs PUBLIC
+    userver::postgresql
+    lua5.4
+    luacpp
+)
 
 
 add_executable(${PROJECT_NAME} src/main.cpp)
@@ -31,6 +35,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-objs)
 
 add_executable(${PROJECT_NAME}-unittest
     src/ut/execute-lambda.cpp
+    src/ut/execute-lua.cpp
 )
 target_link_libraries(${PROJECT_NAME}-unittest PRIVATE ${PROJECT_NAME}-objs userver::utest)
 add_google_tests(${PROJECT_NAME}-unittest)

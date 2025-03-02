@@ -6,7 +6,7 @@ name: Docker build
     pull_request:
     push:
         branches:
-          - master
+          - trunk
           - develop
           - feature/**
 
@@ -26,6 +26,9 @@ jobs:
                 restore-keys: |
                     ccache-dir-${{github.ref}}_run-
                     ccache-
+
+          - name: Image
+            run: docker build . -t lambda-executor
 
           - name: Cmake
             run: make docker-cmake-release

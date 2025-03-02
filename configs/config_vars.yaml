@@ -1,7 +1,13 @@
 worker-threads: 4
 worker-fs-threads: 2
+worker-monitor-threads: 2
+
 logger-level: info
 
 is-testing: false
 
 server-port: 8080
+monitor-server-port: 8086
+
+server-name: lambda-executor
+user-agent: lambda-executor 0.0.1

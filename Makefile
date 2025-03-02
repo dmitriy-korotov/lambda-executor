@@ -1,7 +1,7 @@
 PROJECT_NAME = lambda-executor
 NPROCS ?= $(shell nproc)
 CLANG_FORMAT ?= clang-format
-DOCKER_IMAGE ?= ghcr.io/userver-framework/ubuntu-24.04-userver:latest
+DOCKER_IMAGE ?= lambda-executor
 # If we're under TTY, pass "-it" to "docker run"
 DOCKER_ARGS = $(shell /bin/test -t 0 && /bin/echo -it || echo)
 PRESETS ?= debug release debug-custom release-custom
