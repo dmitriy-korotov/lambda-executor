@@ -6,7 +6,7 @@ components_manager:
 
         fs-task-processor:
             thread_name: fs-worker
-            worker_threads: $worker-fs-threads
+            worker_threads: $worker-threads
 
         monitor-task-processor:
             thread_name: mon-worker
@@ -77,6 +77,7 @@ components_manager:
             task_processor: monitor-task-processor
 
         testsuite-support: {}
+        
         tests-control:
             load-enabled: $is-testing
             path: /tests/{action}
