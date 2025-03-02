@@ -1,9 +1,15 @@
+/**
+ * @copyright Copyright 2025 MIET-Lambda.
+ *            All rights reserved.
+ *            Licensed under the Apache-2.0 License and CLA.
+ */
+
 #include <userver/utest/utest.hpp>
 
 #include <LuaCpp/LuaCpp.hpp>
 
 class TestLuaCpp : public testing::Test {
-protected:
+ protected:
   LuaCpp::LuaContext ctx;
 
   static int Sum(lua_State* L) noexcept {
@@ -42,9 +48,11 @@ UTEST_F(TestLuaCpp, Lib) {
 
   ctx.AddLibrary(lib);
 
-  ASSERT_NO_THROW(ctx.CompileString("test-lib", "print('Result: ' .. mylib.sum(1, 2, 3, 4, 5))"));
+  ASSERT_NO_THROW(ctx.CompileString(
+      "test-lib", "print('Result: ' .. mylib.sum(1, 2, 3, 4, 5))"));
   ASSERT_NO_THROW(ctx.Run("test-lib"));
 
-  ASSERT_NO_THROW(ctx.CompileString("test-lib-fail", "print('Result: ' .. mylib.sum(1, 'a', 2))"));
+  ASSERT_NO_THROW(ctx.CompileString(
+      "test-lib-fail", "print('Result: ' .. mylib.sum(1, 'a', 2))"));
   ASSERT_THROW(ctx.Run("test-lib-fail"), std::runtime_error);
 }
