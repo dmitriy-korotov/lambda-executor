@@ -56,3 +56,30 @@ UTEST_F(TestLuaCpp, Lib) {
       "test-lib-fail", "print('Result: ' .. mylib.sum(1, 'a', 2))"));
   ASSERT_THROW(ctx.Run("test-lib-fail"), std::runtime_error);
 }
+
+UTEST_F(TestLuaCpp, JsonLib) {
+  ASSERT_NO_THROW(ctx.CompileString("test-json", R"(
+    local json = require("dkjson")
+
+    local data = {
+        name = "Lua",
+        version = "5.4",
+        features = {"lightweight", "embeddable", "fast"}
+    }
+
+    local json_text = json.encode(data, { indent = true })
+    print("Encoded JSON:")
+    print(json_text)
+
+    local decoded_data, pos, err = json.decode(json_text, 1, nil)
+    if err then
+        print("Error:", err)
+    else
+        print("\nDecoded Data:")
+        for key, value in pairs(decoded_data) do
+            print(key, value)
+        end
+    end
+  )"));
+  ASSERT_NO_THROW(ctx.Run("test-json"));
+}

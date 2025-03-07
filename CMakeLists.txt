@@ -47,6 +47,12 @@ add_executable(${PROJECT_NAME}-benchmark
 target_link_libraries(${PROJECT_NAME}-benchmark PRIVATE ${PROJECT_NAME}-objs userver::ubench)
 add_google_benchmark_tests(${PROJECT_NAME}-benchmark)
 
+add_custom_command(TARGET ${PROJECT_NAME}-benchmark PRE_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_SOURCE_DIR}/src/benchmarks/
+                  $<TARGET_FILE_DIR:${PROJECT_NAME}-benchmark>
+)
+
 
 userver_testsuite_add_simple()
 
