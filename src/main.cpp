@@ -1,9 +1,3 @@
-/**
- * @copyright Copyright 2025 MIET-Lambda.
- *            All rights reserved.
- *            Licensed under the Apache-2.0 License and CLA.
- */
-
 #include <userver/clients/dns/component.hpp>
 #include <userver/clients/http/client.hpp>
 #include <userver/clients/http/component.hpp>
