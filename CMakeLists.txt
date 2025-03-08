@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.12...3.31)
 
+set(CMAKE_CXX_STANDARD 20)
+
 project(lambda-executor
         LANGUAGES CXX
         DESCRIPTION "A service for running lambda-scripts on nodes"
@@ -18,6 +20,8 @@ userver_setup_environment()
 
 
 add_library(${PROJECT_NAME}-objs OBJECT
+    src/miet/lambda-executor/lua/http-lib.hpp
+    src/miet/lambda-executor/lua/http-lib.cpp
     src/miet/lambda-executor/handlers/execute-lambda.hpp
     src/miet/lambda-executor/handlers/execute-lambda.cpp
 )
